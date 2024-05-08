@@ -1,0 +1,13 @@
+1. class WordleInfo, 2. check_against_answer, 3. check_against_info, 4. get_all_words, 5. get_input_cheater, 6. get_input_play, 7. get_possible_words, 8. print_possibilities, 9. print_word_info, 10. process_input_info, 11. select_answer, 12. settings_setup
+The WordleInfo class contains 3 info types required in wordle. The green type is a list of 5 letters. This info represents the letters that are in the same position as the answer word. The yellow type is a dictionary. Each key is a letter and each value is a list containing an integer representing the number of times that letter occurs and a list of integer values representing indices where that letter cannot be. The black type is a list of letters which either do not exist in the answer or do not have any instances outside of ones already accounted for. These info types are accessed using .green, .yellow and .black, respectively.
+The check_against_answer function takes the known answer and a guess word and compares them, giving back the colors of each letter in the guess according to Wordle rules. It is used in wordleplay.py.
+The check_against_info function takes a candidate word and known color information to determine if that word could possibly be the answer word. It is used in wordlecheat.py.
+The get_all_words function takes words from a file and puts them all in one list. Used with allfivewords.txt to get a list of all words of length 5. Used in wordlecheat.py and wordleplay.py.
+The get_input_cheater function gets and processes the user input for wordlecheat.py.
+The get_input_play function gets and processes the user input for wordleplay.py.
+The get_possible_words function utilizes the check_against_info function to take a list of all possible answers and return a list of all words the answer could be given the known color info. It is used in wordlecheat.py.
+The print_possibilities function prints a list of words in a tidy fashion, used in wordlecheat.py to print the list of possible words.
+The print_word_info function prints the info gained through processing color information for the user. Used in wordlecheat.py.
+The process_input_info function takes the user input's guess and color data and transforms it into useful information. It is used in wordlecheat.py
+The select_answer function selects a random word from a list to serve as the answer word. It is used in wordleplay.py.
+The settings_setup function gets user input for settings such as debug mode and enabling the Wordle helper. It is used in wordleplay.py.
