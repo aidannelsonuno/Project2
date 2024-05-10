@@ -28,6 +28,7 @@ class Logic(QMainWindow, Ui_main_window):
         self.return_button.clicked.connect(self.enter_startup_mode)
         self.start_button.clicked.connect(self.enter_gameplay_mode)
         self.guess_button.clicked.connect(self.take_guess)
+        self.entry_guess.returnPressed.connect(self.take_guess)
 
         self.enter_startup_mode()
 
@@ -91,7 +92,7 @@ class Logic(QMainWindow, Ui_main_window):
         '''
         Hides widgets for the game, shows widgets for the startup menu and updates statistic displays
         '''
-        with open("Project2/stats_data.txt", 'r') as file:
+        with open("stats_data.txt", 'r') as file:
             data = file.readline().split()
             self.label_games_played.setText(data[0])
             self.label_stats_1g.setText(data[1])
@@ -118,9 +119,9 @@ class Logic(QMainWindow, Ui_main_window):
         '''
         all_words = []
         if curated:
-            filename = "Project2/previous_wordle_answers.txt"
+            filename = "previous_wordle_answers.txt"
         else:
-            filename = "Project2/all_five_words.txt"
+            filename = "all_five_words.txt"
         with open(filename, 'r') as f:
             for line in f.readlines():
                 for word in line.strip().split():
@@ -134,7 +135,7 @@ class Logic(QMainWindow, Ui_main_window):
         '''
         self.remaining_words = self.get_all_words()
         self.word_list = self.get_all_words(self.checkBox_curation_toggle.isChecked())
-        self.answer = self.all_words[random.randint(0, len(self.all_words) - 1)]
+        self.answer = self.word_list[random.randint(0, len(self.word_list) - 1)]
         self.label_answer.setText(self.answer)
         self.helper_info = WordleInfo()
         self.all_possibilities.setText('')
@@ -246,7 +247,7 @@ class Logic(QMainWindow, Ui_main_window):
                         self.label_congrats_guesses.setText(f"Better luck next time!")
                     self.label_congrats_answer.setVisible(True)
                     self.label_congrats_guesses.setVisible(True)
-                    with open("Project2/stats_data.txt", "r+") as file: # This file is 7 numbers separated by spaces
+                    with open("stats_data.txt", "r+") as file: # This file is 7 numbers separated by spaces
                         stats = file.readline().split()
                         stats[0] = str(int(stats[0]) + 1)
                         stats[self.guesses_made] = str(int(stats[self.guesses_made]) + 1)
