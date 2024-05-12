@@ -17,6 +17,7 @@ class Logic(QMainWindow, Ui_main_window):
 
         self.all_words = self.get_all_words()
 
+        # Grouping widgets for collective editing and initializing instance variables
         self.gameplay_group = self.make_gameplay_group()
         self.letter_array = self.make_letter_array()
         self.appearing_group = self.make_appearing_group()
@@ -24,11 +25,13 @@ class Logic(QMainWindow, Ui_main_window):
         self.guess_label_group = self.make_guess_title_list()
         self.helper_info = WordleInfo()
 
+        # Connecting buttons to their functions
         self.exit_button.clicked.connect(self.close)
         self.return_button.clicked.connect(self.enter_startup_mode)
         self.start_button.clicked.connect(self.enter_gameplay_mode)
         self.guess_button.clicked.connect(self.take_guess)
         self.entry_guess.returnPressed.connect(self.take_guess)
+
 
         self.enter_startup_mode()
 
@@ -79,7 +82,7 @@ class Logic(QMainWindow, Ui_main_window):
         '''
         Hides widgets for the setup menu, shows widgets for gameplay and initializes new game data
         '''
-        for widget in self.startup_group:
+        for widget in self.startup_group: # Hides and reveals appropriate widgets
             widget.setVisible(False)
         for widget in self.gameplay_group:
             widget.setVisible(True)
@@ -93,7 +96,7 @@ class Logic(QMainWindow, Ui_main_window):
         Hides widgets for the game, shows widgets for the startup menu and updates statistic displays
         '''
         with open("stats_data.txt", 'r') as file:
-            data = file.readline().split()
+            data = file.readline().split() # Reads in user statistics data and displays it
             self.label_games_played.setText(data[0])
             self.label_stats_1g.setText(data[1])
             self.label_stats_2g.setText(data[2])
@@ -101,7 +104,7 @@ class Logic(QMainWindow, Ui_main_window):
             self.label_stats_4g.setText(data[4])
             self.label_stats_5g.setText(data[5])
             self.label_stats_6g.setText(data[6])
-        for widget in self.startup_group:
+        for widget in self.startup_group:  # Hides and reveals appropriate widgets
             widget.setVisible(True)
         for widget in self.gameplay_group:
             widget.setVisible(False)
@@ -118,7 +121,7 @@ class Logic(QMainWindow, Ui_main_window):
         :return: A list of all possible answers at the beginning of the game based on the desired set of words
         '''
         all_words = []
-        if curated:
+        if curated: # These two files contain the words used in the game
             filename = "previous_wordle_answers.txt"
         else:
             filename = "all_five_words.txt"
@@ -215,15 +218,15 @@ class Logic(QMainWindow, Ui_main_window):
         Ends the gameplay loop if the answer is guessed or the maximum of 6 guesses is reached
         This is the main driver of gameplay progress
         '''
-        if self.guesses_made < 6:
+        if self.guesses_made < 6: # Only 6 guesses are allowed in a game of wordle
             guess = self.entry_guess.text().strip().upper()
-            if not guess.isalpha():
+            if not guess.isalpha(): # Checking user input to make sure it is a 5-letter word
                 self.label_error_display.setText("Guesses must only contain letters.")
             elif len(guess) != 5:
                 self.label_error_display.setText("Guesses must be 5 letters long.")
             elif guess not in self.all_words:
                 self.label_error_display.setText(f"{guess.title()} is not an English word.")
-            else:
+            else: # Reveals all pertinent widgets, gains information from guess and gives help if desired
                 self.label_error_display.setText('')
                 self.check_against_answer(guess)
                 self.label_previous_title.setVisible(True)
@@ -235,8 +238,8 @@ class Logic(QMainWindow, Ui_main_window):
                     self.all_possibilities.setText(f"Possible words:\n{'  '.join(self.remaining_words)}")
                 self.entry_guess.setText('')
                 self.guesses_made += 1
-                if guess == self.answer or self.guesses_made == 6:
-                    self.label_answer_title.setVisible(True)
+                if guess == self.answer or self.guesses_made == 6: # Ends the game
+                    self.label_answer_title.setVisible(True) 
                     self.label_answer.setVisible(True)
                     self.all_possibilities.setText('')
                     self.all_possibilities.setVisible(False)
